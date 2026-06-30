@@ -1,0 +1,131 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "Money Counter",
+  "total": "Total",
+  "fullBundles": "{count} full bundles",
+  "@fullBundles": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "partialBundles": "{count} partial bundles",
+  "@partialBundles": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "profiles": "Profiles",
+  "activeProfile": "Active",
+  "addProfile": "Add profile",
+  "editProfile": "Edit profile",
+  "newProfile": "New profile",
+  "deleteProfile": "Delete profile",
+  "confirmDeleteProfile": "Delete \"{name}\"?",
+  "@confirmDeleteProfile": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "profileName": "Profile name",
+  "currencyCode": "Currency code (e.g. EGP)",
+  "denominations": "Denominations",
+  "addDenomination": "Add denomination",
+  "dragToReorder": "Drag to reorder",
+  "saveProfile": "Save profile",
+
+  "bundleSummaryFull": "{bundles} bundle + {remainder} notes",
+  "@bundleSummaryFull": {
+    "placeholders": {
+      "bundles": { "type": "int" },
+      "remainder": { "type": "int" }
+    }
+  },
+  "bundleSummaryOnly": "{bundles} bundle",
+  "@bundleSummaryOnly": {
+    "placeholders": { "bundles": { "type": "int" } }
+  },
+  "notesOnly": "{count} notes",
+  "@notesOnly": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "addExtraDenomination": "Add denomination",
+  "extraDenominationHint": "Emergency — added to current session only",
+  "denominationValue": "Value",
+  "denominationValueHint": "e.g. 5",
+  "denominationLabel": "Label (optional)",
+  "denominationLabelHint": "e.g. 5 Pounds",
+  "denominationSubtotal": "Subtotal: {amount} {currency}",
+  "@denominationSubtotal": {
+    "placeholders": {
+      "amount": { "type": "String" },
+      "currency": { "type": "String" }
+    }
+  },
+
+  "reset": "Reset",
+  "resetTitle": "Reset profile",
+  "resetConfirm": "All entered values will be cleared. Emergency denominations will remain.",
+  "save": "Save",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "add": "Add",
+
+  "saveToHistory": "Save to history",
+  "noteOptional": "Note (optional)",
+  "savedToHistory": "Saved to history",
+
+  "history": "History",
+  "historyEmpty": "No history yet",
+  "historyEmptyHint": "Save a session to see it here",
+  "deleteEntry": "Delete entry",
+  "deleteEntryConfirm": "Delete this history entry?",
+
+  "share": "Share",
+  "shareAutoSaveNote": "Sharing saves automatically to history",
+  "fullBundlesCount": "Full bundles: {count}",
+  "@fullBundlesCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "settings": "Settings",
+  "language": "Language",
+  "languageSubtitle": "App display language",
+  "about": "About",
+  "version": "Version",
+
+  "notesInputHint": "Notes",
+  "valueMustBePositive": "Value must be greater than zero",
+  "nameRequired": "Name is required",
+  "currencyRequired": "Currency code is required",
+  "atLeastOneDenomination": "Add at least one denomination",
+  "denominationAlreadyExists": "This denomination already exists",
+
+  "defaultProfileEGP": "Egyptian Pound",
+  "defaultProfileUSD": "US Dollar",
+
+  "extraDenominationTag": "Emergency",
+  "switchProfile": "Switch profile",
+  "addProfileShort": "+ Profile",
+
+  "columnDenomination": "Denomination",
+  "columnNotes": "Notes",
+  "columnBundles": "Bundles",
+  "columnAmount": "Amount",
+  "addDenominationTitle": "Add denomination",
+  "denominationValueHintShort": "e.g. 5",
+  "groupSubtotalLabel": "Subtotal: {amount} {currency}",
+  "@groupSubtotalLabel": {
+    "placeholders": {
+      "amount": { "type": "String" },
+      "currency": { "type": "String" }
+    }
+  },
+  "bundleInfoCompact": "({bundles} bundle)",
+  "@bundleInfoCompact": {
+    "placeholders": { "bundles": { "type": "int" } }
+  },
+  "bundleInfoWithRemainder": "({bundles}+{remainder})",
+  "@bundleInfoWithRemainder": {
+    "placeholders": {
+      "bundles": { "type": "int" },
+      "remainder": { "type": "int" }
+    }
+  }
+}

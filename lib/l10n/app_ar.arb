@@ -1,0 +1,131 @@
+{
+  "@@locale": "ar",
+
+  "appTitle": "عداد النقود",
+  "total": "الإجمالي",
+  "fullBundles": "{count} رزمة كاملة",
+  "@fullBundles": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "partialBundles": "{count} رزمة ناقصة",
+  "@partialBundles": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "profiles": "البروفايلات",
+  "activeProfile": "نشط",
+  "addProfile": "إضافة بروفايل",
+  "editProfile": "تعديل البروفايل",
+  "newProfile": "بروفايل جديد",
+  "deleteProfile": "حذف البروفايل",
+  "confirmDeleteProfile": "حذف \"{name}\"؟",
+  "@confirmDeleteProfile": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "profileName": "اسم البروفايل",
+  "currencyCode": "رمز العملة (مثال: EGP)",
+  "denominations": "الفئات",
+  "addDenomination": "إضافة فئة",
+  "dragToReorder": "اسحب لإعادة الترتيب",
+  "saveProfile": "حفظ البروفايل",
+
+  "bundleSummaryFull": "{bundles} رزمة + {remainder} ورقة",
+  "@bundleSummaryFull": {
+    "placeholders": {
+      "bundles": { "type": "int" },
+      "remainder": { "type": "int" }
+    }
+  },
+  "bundleSummaryOnly": "{bundles} رزمة",
+  "@bundleSummaryOnly": {
+    "placeholders": { "bundles": { "type": "int" } }
+  },
+  "notesOnly": "{count} ورقة",
+  "@notesOnly": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "addExtraDenomination": "إضافة فئة",
+  "extraDenominationHint": "طارئة — تُضاف للجلسة الحالية فقط",
+  "denominationValue": "القيمة",
+  "denominationValueHint": "مثال: 5",
+  "denominationLabel": "الاسم (اختياري)",
+  "denominationLabelHint": "مثال: 5 جنيه",
+  "denominationSubtotal": "مجموع الفئة: {amount} {currency}",
+  "@denominationSubtotal": {
+    "placeholders": {
+      "amount": { "type": "String" },
+      "currency": { "type": "String" }
+    }
+  },
+
+  "reset": "إعادة ضبط",
+  "resetTitle": "إعادة ضبط البروفايل",
+  "resetConfirm": "سيتم مسح جميع الأرقام المدخلة. الفئات الطارئة ستبقى موجودة.",
+  "save": "حفظ",
+  "cancel": "إلغاء",
+  "delete": "حذف",
+  "add": "إضافة",
+
+  "saveToHistory": "حفظ في السجل",
+  "noteOptional": "ملاحظة (اختياري)",
+  "savedToHistory": "تم الحفظ في السجل",
+
+  "history": "السجل",
+  "historyEmpty": "لا يوجد سجل بعد",
+  "historyEmptyHint": "احفظ جلسة لتظهر هنا",
+  "deleteEntry": "حذف السجل",
+  "deleteEntryConfirm": "هل تريد حذف هذا السجل؟",
+
+  "share": "مشاركة",
+  "shareAutoSaveNote": "المشاركة تحفظ تلقائياً في السجل",
+  "fullBundlesCount": "الرزم الكاملة: {count}",
+  "@fullBundlesCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "settings": "الإعدادات",
+  "language": "اللغة",
+  "languageSubtitle": "لغة عرض التطبيق",
+  "about": "حول التطبيق",
+  "version": "الإصدار",
+
+  "notesInputHint": "أوراق",
+  "valueMustBePositive": "القيمة يجب أن تكون أكبر من صفر",
+  "nameRequired": "الاسم مطلوب",
+  "currencyRequired": "رمز العملة مطلوب",
+  "atLeastOneDenomination": "أضف فئة واحدة على الأقل",
+  "denominationAlreadyExists": "هذه الفئة موجودة مسبقاً",
+
+  "defaultProfileEGP": "جنيه مصري",
+  "defaultProfileUSD": "دولار أمريكي",
+
+  "extraDenominationTag": "طارئة",
+  "switchProfile": "تغيير البروفايل",
+  "addProfileShort": "+ بروفايل",
+
+  "columnDenomination": "الفئة",
+  "columnNotes": "الأوراق",
+  "columnBundles": "الرزم",
+  "columnAmount": "المبلغ",
+  "addDenominationTitle": "إضافة فئة",
+  "denominationValueHintShort": "مثال: 5",
+  "groupSubtotalLabel": "مجموع الفئة: {amount} {currency}",
+  "@groupSubtotalLabel": {
+    "placeholders": {
+      "amount": { "type": "String" },
+      "currency": { "type": "String" }
+    }
+  },
+  "bundleInfoCompact": "({bundles} رزمة)",
+  "@bundleInfoCompact": {
+    "placeholders": { "bundles": { "type": "int" } }
+  },
+  "bundleInfoWithRemainder": "({bundles}+{remainder})",
+  "@bundleInfoWithRemainder": {
+    "placeholders": {
+      "bundles": { "type": "int" },
+      "remainder": { "type": "int" }
+    }
+  }
+}
