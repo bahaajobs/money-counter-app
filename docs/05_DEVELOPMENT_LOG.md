@@ -156,24 +156,49 @@
 
 ### ما تم:
 
-#### 1. إصلاح تداخل الأزرار السفلية
-- **المشكلة:** أزرار "إضافة فئة / إعادة ضبط / حفظ" كانت `floatingActionButton` تطفو فوق القائمة
-- **الإصلاح:** نقلها إلى `bottomNavigationBar: SafeArea(child: Padding(...))` في `home_screen.dart`
-- Scaffold يحسب المسافة تلقائياً — لا داعي لـ `padding` يدوي في القائمة
-
-#### 2. أيقونة تطبيق مخصصة
-- أُضيفت `flutter_launcher_icons: ^0.14.3` إلى dev_dependencies
-- صُمِّمت أيقونة 1024×1024: خلفية خضراء داكنة (#1B5E20) + أوراق نقدية مكدّسة
-- Adaptive icon لـ Android 8.0+ (API 26+): `mipmap-anydpi-v26/ic_launcher.xml`
-- ملفات الأيقونة: `assets/icon/app_icon.png` (كاملة) + `assets/icon/app_icon_fg.png` (foreground شفاف)
-- `flutter pub run flutter_launcher_icons` — ولّد جميع كثافات mipmap ✅
-
-#### 3. إضافة الكريدت وحقوق الملكية
+#### 1. إضافة الكريدت وحقوق الملكية
 - قسم "حول التطبيق" في الإعدادات أصبح 3 بنود: الإصدار + فكرة وتصميم + الحقوق
 - مفاتيح ARB جديدة: `aboutCredit` و`aboutCopyright` في كلا الملفين EN + AR
 - العربية: `فكرة وتصميم: بهاء الدين محمد` / الإنجليزية: `Concept & Design: Bahaa Al-Din Muhammad`
 
+#### 2. أيقونة تطبيق مخصصة (الجيل الأول)
+- أُضيفت `flutter_launcher_icons: ^0.14.3` إلى dev_dependencies
+- صُمِّمت أيقونة 1024×1024 برمجياً عبر .NET GDI+
+- `flutter pub run flutter_launcher_icons` — ولّد جميع كثافات mipmap ✅
+
 - tag هذه التحسينات: `v1.0.2`
+
+---
+
+## المرحلة 10: إصلاح التداخل النهائي + أيقونة جديدة ✅
+**التاريخ:** 2026-06-30
+
+### ما تم:
+
+#### 1. إصلاح تداخل الأزرار السفلية (النهائي)
+- **المشكلة:** أزرار "إضافة فئة / إعادة ضبط / حفظ" كانت `floatingActionButton` تطفو فوق القائمة
+- **المحاولة الأولى (لم تنجح على بعض الأجهزة):** نقلها إلى `bottomNavigationBar` — بعض الأجهزة كانت لا تزال تُظهر z-ordering خاطئاً
+- **الإصلاح النهائي:** إدراج الأزرار داخل `Column` نفسه **بعد** الـ `Expanded(ListView)` مباشرةً:
+
+```
+Column
+├── TotalCard           ← ثابت
+├── ProfileSelector     ← ثابت
+├── Expanded(ListView)  ← يأخذ كل المساحة المتبقية
+└── Container(buttons)  ← ثابت، مستحيل هيكلياً أن يتداخل مع ما فوقه
+```
+
+- خلفية الـ Container: `cs.surface` صلبة + خط فاصل علوي
+- `SafeArea(top: false)` داخله لاحترام شريط التنقل السفلي
+
+#### 2. أيقونة التطبيق النهائية
+- استُبدلت الأيقونة المولّدة برمجياً بتصميم 3D احترافي (رزم نقود isometric)
+- الصورة الأصلية: 2074×2048 → قُصّت إلى 1024×1024 (center crop)
+- Foreground للـ adaptive icon: نفس الصورة بحجم 80% على خلفية شفافة
+- لون الخلفية للـ adaptive icon: `#1E6EB5` (يطابق تدرج الأزرق في الصورة)
+- `flutter pub run flutter_launcher_icons` → ولّد جميع الكثافات ✅
+
+- tag هذه التحسينات: `v1.0.3`
 
 ---
 
@@ -193,4 +218,6 @@
 | 10 | قبول رخص SDK interactively | `cmd /c type yes_file.txt \| sdkmanager --licenses` |
 | 11 | plugins تتطلب NDK 27 لكن build.gradle.kts يستخدم `flutter.ndkVersion` (26) | تثبيت `ndkVersion = "27.0.12077973"` في build.gradle.kts |
 | 12 | تلف بيانات SharedPreferences يتسبب في تعطّل التطبيق | إضافة `try/catch` في `_loadProfiles`, `_loadSessions`, `_loadHistory` |
-| 13 | الأزرار السفلية (FAB) تتداخل مع محتوى القائمة | نقلها إلى `bottomNavigationBar: SafeArea(...)` — Scaffold يدير المسافة تلقائياً |
+| 13 | الأزرار السفلية (FAB) تتداخل مع محتوى القائمة — المحاولة الأولى | نقلها إلى `bottomNavigationBar` — لم تُحل على جميع الأجهزة بسبب z-ordering |
+| 14 | التداخل استمر مع `bottomNavigationBar` على بعض الأجهزة | نقل الأزرار داخل `Column` بعد `Expanded(ListView)` — حل هيكلي لا يعتمد على z-ordering |
+| 15 | build artifacts قديمة تمنع ظهور الإصلاح | `flutter clean` قبل إعادة البناء عند الاشتباه بمشكلة cache |
