@@ -250,14 +250,18 @@ class AppProvider extends ChangeNotifier {
 
   // ── persistence ───────────────────────────────────────────────────────────
   void _loadProfiles() {
-    final raw = _prefs.getString('profiles');
-    if (raw != null) {
-      final list = jsonDecode(raw) as List;
-      _profiles = list.map((e) => Profile.fromJson(e as Map<String, dynamic>)).toList();
-    } else {
-      _profiles = _defaultProfiles();
-      _saveProfiles();
+    try {
+      final raw = _prefs.getString('profiles');
+      if (raw != null) {
+        final list = jsonDecode(raw) as List;
+        _profiles = list.map((e) => Profile.fromJson(e as Map<String, dynamic>)).toList();
+        return;
+      }
+    } catch (_) {
+      // corrupted data — fall back to defaults
     }
+    _profiles = _defaultProfiles();
+    _saveProfiles();
   }
 
   void _saveProfiles() {
@@ -265,12 +269,17 @@ class AppProvider extends ChangeNotifier {
   }
 
   void _loadSessions() {
-    final raw = _prefs.getString('sessions');
-    if (raw == null) return;
-    final map = jsonDecode(raw) as Map<String, dynamic>;
-    map.forEach((key, value) {
-      _sessions[key] = ProfileSession.fromJson(value as Map<String, dynamic>);
-    });
+    try {
+      final raw = _prefs.getString('sessions');
+      if (raw == null) return;
+      final map = jsonDecode(raw) as Map<String, dynamic>;
+      map.forEach((key, value) {
+        _sessions[key] = ProfileSession.fromJson(value as Map<String, dynamic>);
+      });
+    } catch (_) {
+      // corrupted session data — start fresh (sessions rebuild on next access)
+      _sessions.clear();
+    }
   }
 
   void _saveSessions() {
@@ -280,10 +289,15 @@ class AppProvider extends ChangeNotifier {
   }
 
   void _loadHistory() {
-    final raw = _prefs.getString('history');
-    if (raw == null) return;
-    final list = jsonDecode(raw) as List;
-    _history = list.map((e) => HistoryEntry.fromJson(e as Map<String, dynamic>)).toList();
+    try {
+      final raw = _prefs.getString('history');
+      if (raw == null) return;
+      final list = jsonDecode(raw) as List;
+      _history = list.map((e) => HistoryEntry.fromJson(e as Map<String, dynamic>)).toList();
+    } catch (_) {
+      // corrupted history data — start with empty history
+      _history = [];
+    }
   }
 
   void _saveHistory() {

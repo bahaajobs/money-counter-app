@@ -123,6 +123,31 @@
 - `flutter build apk --debug` — نجح ✅
 - **APK:** `build/app/outputs/flutter-apk/app-debug.apk`
 - `flutter analyze` — No issues found ✅
+- نشر على GitHub: https://github.com/bahaajobs/money-counter-app — tag `v1.0.0`
+
+---
+
+## المرحلة 8: تقوية الأمان ✅
+**التاريخ:** 2026-06-30
+
+### نتائج المراجعة الأمنية:
+- ✅ التطبيق offline بالكامل — لا requests، لا بيانات ترسل لأي خادم
+- ✅ صفر أذونات خطيرة في AndroidManifest
+- ✅ لا أسرار أو credentials مضمّنة في الكود
+- ✅ التحقق من المدخلات مضبوط في جميع الحقول
+- ⚠️ **نقطة تحسين:** دوال تحميل البيانات بدون `try/catch`
+
+### الإصلاح المُطبَّق في `app_provider.dart`:
+الدوال الثلاث `_loadProfiles` و`_loadSessions` و`_loadHistory` أُضيف لها `try/catch`:
+
+| البيانات التالفة | السلوك قبل | السلوك بعد |
+|----------------|-----------|-----------|
+| profiles | تعطّل عند الفتح | استعادة البروفايلات الافتراضية |
+| sessions | تعطّل عند الفتح | بداية جلسة جديدة فارغة |
+| history | تعطّل عند الفتح | سجل فارغ |
+
+- tag النسخة الأصلية (قبل الإصلاح): `v1.0.0`
+- commit هذا الإصلاح: `v1.0.1`
 
 ---
 
@@ -141,3 +166,4 @@
 | 9 | `JAVA_HOME` غير مضبوط → sdkmanager يفشل | `winget install Microsoft.OpenJDK.21` |
 | 10 | قبول رخص SDK interactively | `cmd /c type yes_file.txt \| sdkmanager --licenses` |
 | 11 | plugins تتطلب NDK 27 لكن build.gradle.kts يستخدم `flutter.ndkVersion` (26) | تثبيت `ndkVersion = "27.0.12077973"` في build.gradle.kts |
+| 12 | تلف بيانات SharedPreferences يتسبب في تعطّل التطبيق | إضافة `try/catch` في `_loadProfiles`, `_loadSessions`, `_loadHistory` |
