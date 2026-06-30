@@ -93,8 +93,9 @@ class _DenominationRowWidgetState extends State<DenominationRowWidget> {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          SizedBox(
-            width: 90,
+          // Label — flexible, max 80, never wraps
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 32, maxWidth: 80),
             child: Text(
               widget.label,
               style: theme.textTheme.titleSmall?.copyWith(
@@ -102,9 +103,12 @@ class _DenominationRowWidgetState extends State<DenominationRowWidget> {
                 color: cs.primary,
               ),
               textAlign: TextAlign.right,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           const SizedBox(width: 8),
+          // Input — takes all remaining space
           Expanded(
             child: TextField(
               controller: _ctrl,
@@ -124,8 +128,7 @@ class _DenominationRowWidgetState extends State<DenominationRowWidget> {
                 hintStyle: TextStyle(
                     fontSize: 12, color: cs.onSurface.withValues(alpha: 0.4)),
                 suffixText: _bundleInfo(context),
-                suffixStyle:
-                    TextStyle(fontSize: 10, color: cs.secondary),
+                suffixStyle: TextStyle(fontSize: 10, color: cs.secondary),
               ),
               onChanged: (_) {
                 setState(() {});
@@ -133,33 +136,45 @@ class _DenominationRowWidgetState extends State<DenominationRowWidget> {
               },
             ),
           ),
-          const SizedBox(width: 6),
-          SizedBox(
-            width: 76,
-            child: Text(
-              _total > 0 ? _fmtTotal(_total) : '',
-              style: theme.textTheme.bodySmall?.copyWith(color: cs.secondary),
-              textAlign: TextAlign.center,
-            ),
-          ),
+          const SizedBox(width: 4),
+          // Total — flexible, max 70, hides when empty
+          if (_total > 0)
+            ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: 40, maxWidth: 70),
+              child: Text(
+                _fmtTotal(_total),
+                style: theme.textTheme.bodySmall?.copyWith(color: cs.secondary),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            )
+          else
+            const SizedBox(width: 4),
+          // Delete button (or spacer)
           if (widget.canDelete)
             IconButton(
               icon: const Icon(Icons.remove_circle_outline, size: 20),
               color: cs.error,
               onPressed: widget.onDelete,
               visualDensity: VisualDensity.compact,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
             )
           else
-            const SizedBox(width: 40),
+            const SizedBox(width: 36),
+          // Add bundle button (or spacer)
           if (widget.isLast)
             IconButton(
               icon: const Icon(Icons.add_circle, size: 24),
               color: cs.primary,
               onPressed: widget.onAddBundle,
               visualDensity: VisualDensity.compact,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
             )
           else
-            const SizedBox(width: 40),
+            const SizedBox(width: 36),
         ],
       ),
     );

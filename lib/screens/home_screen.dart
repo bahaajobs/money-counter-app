@@ -74,44 +74,10 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: cs.surface,
-              border: Border(top: BorderSide(color: cs.outlineVariant, width: 0.5)),
-            ),
-            child: SafeArea(
-              top: false,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        icon: const Icon(Icons.add),
-                        label: Text(l10n.addExtraDenomination),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: cs.secondaryContainer,
-                          foregroundColor: cs.onSecondaryContainer,
-                        ),
-                        onPressed: () => _showAddDenominationDialog(context, provider),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    OutlinedButton.icon(
-                      icon: const Icon(Icons.refresh),
-                      label: Text(l10n.reset),
-                      onPressed: () => _confirmReset(context, provider),
-                    ),
-                    const SizedBox(width: 8),
-                    FilledButton.icon(
-                      icon: const Icon(Icons.save),
-                      label: Text(l10n.save),
-                      onPressed: () => _saveHistory(context, provider),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          _BottomBar(
+            onAdd:   () => _showAddDenominationDialog(context, provider),
+            onReset: () => _confirmReset(context, provider),
+            onSave:  () => _saveHistory(context, provider),
           ),
         ],
       ),
@@ -381,4 +347,83 @@ class _GroupSection extends StatelessWidget {
 
   String _fmt(double v) =>
       v == v.truncateToDouble() ? v.toInt().toString() : v.toStringAsFixed(2);
+}
+
+// ── Bottom Action Bar ─────────────────────────────────────────────────────────
+class _BottomBar extends StatelessWidget {
+  final VoidCallback onAdd;
+  final VoidCallback onReset;
+  final VoidCallback onSave;
+
+  const _BottomBar({
+    required this.onAdd,
+    required this.onReset,
+    required this.onSave,
+  });
+
+  static const _btnStyle = ButtonStyle(
+    padding: WidgetStatePropertyAll(
+        EdgeInsets.symmetric(horizontal: 8, vertical: 0)),
+    minimumSize: WidgetStatePropertyAll(Size(0, 44)),
+    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    iconSize: WidgetStatePropertyAll(16),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final l10n = context.l10n;
+    final isLandscape =
+        MediaQuery.orientationOf(context) == Orientation.landscape;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: cs.surface,
+        border: Border(top: BorderSide(color: cs.outlineVariant, width: 0.5)),
+      ),
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(12, isLandscape ? 4 : 8, 12,
+              isLandscape ? 4 : 12),
+          child: Row(
+            children: [
+              Expanded(
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.add),
+                  label: Text(l10n.addExtraDenomination,
+                      maxLines: 1, overflow: TextOverflow.ellipsis),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: cs.secondaryContainer,
+                    foregroundColor: cs.onSecondaryContainer,
+                  ).merge(_btnStyle),
+                  onPressed: onAdd,
+                ),
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: OutlinedButton.icon(
+                  icon: const Icon(Icons.refresh),
+                  label: Text(l10n.reset,
+                      maxLines: 1, overflow: TextOverflow.ellipsis),
+                  style: OutlinedButton.styleFrom().merge(_btnStyle),
+                  onPressed: onReset,
+                ),
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: FilledButton.icon(
+                  icon: const Icon(Icons.save),
+                  label: Text(l10n.save,
+                      maxLines: 1, overflow: TextOverflow.ellipsis),
+                  style: FilledButton.styleFrom().merge(_btnStyle),
+                  onPressed: onSave,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
