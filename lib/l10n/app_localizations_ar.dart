@@ -240,4 +240,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String bundleInfoWithRemainder(int bundles, int remainder) {
     return '($bundles+$remainder)';
   }
+
+  @override
+  String get aboutCredit => 'فكرة وتصميم: بهاء الدين محمد';
+
+  @override
+  String get aboutCopyright => '© 2026 جميع الحقوق محفوظة';
 }

@@ -517,6 +517,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'({bundles}+{remainder})'**
   String bundleInfoWithRemainder(int bundles, int remainder);
+
+  /// No description provided for @aboutCredit.
+  ///
+  /// In en, this message translates to:
+  /// **'Concept & Design: Bahaa Al-Din Muhammad'**
+  String get aboutCredit;
+
+  /// No description provided for @aboutCopyright.
+  ///
+  /// In en, this message translates to:
+  /// **'© 2026 All rights reserved'**
+  String get aboutCopyright;
 }
 
 class _AppLocalizationsDelegate

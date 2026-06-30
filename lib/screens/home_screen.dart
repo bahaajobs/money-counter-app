@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Expanded(
             child: ListView.separated(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 100),
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
               itemCount: session.groups.length,
               separatorBuilder: (_, __) => const Divider(height: 1),
               itemBuilder: (ctx, gIdx) {
@@ -76,35 +76,36 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Row(
-          children: [
-            Expanded(
-              child: ElevatedButton.icon(
-                icon: const Icon(Icons.add),
-                label: Text(l10n.addExtraDenomination),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: cs.secondaryContainer,
-                  foregroundColor: cs.onSecondaryContainer,
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+          child: Row(
+            children: [
+              Expanded(
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.add),
+                  label: Text(l10n.addExtraDenomination),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: cs.secondaryContainer,
+                    foregroundColor: cs.onSecondaryContainer,
+                  ),
+                  onPressed: () => _showAddDenominationDialog(context, provider),
                 ),
-                onPressed: () => _showAddDenominationDialog(context, provider),
               ),
-            ),
-            const SizedBox(width: 8),
-            OutlinedButton.icon(
-              icon: const Icon(Icons.refresh),
-              label: Text(l10n.reset),
-              onPressed: () => _confirmReset(context, provider),
-            ),
-            const SizedBox(width: 8),
-            FilledButton.icon(
-              icon: const Icon(Icons.save),
-              label: Text(l10n.save),
-              onPressed: () => _saveHistory(context, provider),
-            ),
-          ],
+              const SizedBox(width: 8),
+              OutlinedButton.icon(
+                icon: const Icon(Icons.refresh),
+                label: Text(l10n.reset),
+                onPressed: () => _confirmReset(context, provider),
+              ),
+              const SizedBox(width: 8),
+              FilledButton.icon(
+                icon: const Icon(Icons.save),
+                label: Text(l10n.save),
+                onPressed: () => _saveHistory(context, provider),
+              ),
+            ],
+          ),
         ),
       ),
     );

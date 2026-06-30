@@ -127,5 +127,8 @@
       "bundles": { "type": "int" },
       "remainder": { "type": "int" }
     }
-  }
+  },
+
+  "aboutCredit": "فكرة وتصميم: بهاء الدين محمد",
+  "aboutCopyright": "© 2026 جميع الحقوق محفوظة"
 }

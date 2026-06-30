@@ -241,4 +241,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String bundleInfoWithRemainder(int bundles, int remainder) {
     return '($bundles+$remainder)';
   }
+
+  @override
+  String get aboutCredit => 'Concept & Design: Bahaa Al-Din Muhammad';
+
+  @override
+  String get aboutCopyright => '© 2026 All rights reserved';
 }

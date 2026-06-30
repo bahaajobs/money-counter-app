@@ -127,5 +127,8 @@
       "bundles": { "type": "int" },
       "remainder": { "type": "int" }
     }
-  }
+  },
+
+  "aboutCredit": "Concept & Design: Bahaa Al-Din Muhammad",
+  "aboutCopyright": "© 2026 All rights reserved"
 }

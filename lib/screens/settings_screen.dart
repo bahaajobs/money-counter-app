@@ -43,10 +43,27 @@ class SettingsScreen extends StatelessWidget {
           // ── About Section ───────────────────────────────────────────────
           _SectionHeader(label: l10n.about),
           Card(
-            child: ListTile(
-              leading: const Icon(Icons.info_outline),
-              title: Text(l10n.version),
-              trailing: const Text('1.0.0', style: TextStyle(color: Colors.grey)),
+            child: Column(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.info_outline),
+                  title: Text(l10n.version),
+                  trailing: const Text('1.0.1',
+                      style: TextStyle(color: Colors.grey)),
+                ),
+                const Divider(height: 1, indent: 56),
+                ListTile(
+                  leading: const Icon(Icons.person_outline),
+                  title: Text(l10n.aboutCredit),
+                  dense: true,
+                ),
+                const Divider(height: 1, indent: 56),
+                ListTile(
+                  leading: const Icon(Icons.copyright_outlined),
+                  title: Text(l10n.aboutCopyright),
+                  dense: true,
+                ),
+              ],
             ),
           ),
         ],
