@@ -127,8 +127,6 @@ class _DenominationRowWidgetState extends State<DenominationRowWidget> {
                 hintText: l10n.notesInputHint,
                 hintStyle: TextStyle(
                     fontSize: 12, color: cs.onSurface.withValues(alpha: 0.4)),
-                suffixText: _bundleInfo(context),
-                suffixStyle: TextStyle(fontSize: 10, color: cs.secondary),
               ),
               onChanged: (_) {
                 setState(() {});
@@ -137,20 +135,35 @@ class _DenominationRowWidgetState extends State<DenominationRowWidget> {
             ),
           ),
           const SizedBox(width: 4),
-          // Total — flexible, max 70, hides when empty
-          if (_total > 0)
-            ConstrainedBox(
-              constraints: const BoxConstraints(minWidth: 40, maxWidth: 70),
-              child: Text(
-                _fmtTotal(_total),
-                style: theme.textTheme.bodySmall?.copyWith(color: cs.secondary),
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            )
-          else
-            const SizedBox(width: 4),
+          // Total + bundle info stacked — flexible, max 70
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 40, maxWidth: 70),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (_total > 0)
+                  Text(
+                    _fmtTotal(_total),
+                    style:
+                        theme.textTheme.bodySmall?.copyWith(color: cs.secondary),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                if (_bundleInfo(context).isNotEmpty)
+                  Text(
+                    _bundleInfo(context),
+                    style: TextStyle(
+                        fontSize: 9,
+                        color: cs.primary,
+                        fontWeight: FontWeight.w500),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+              ],
+            ),
+          ),
           // Delete button (or spacer)
           if (widget.canDelete)
             IconButton(

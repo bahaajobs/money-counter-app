@@ -361,13 +361,13 @@ class _BottomBar extends StatelessWidget {
     required this.onSave,
   });
 
-  static const _btnStyle = ButtonStyle(
-    padding: WidgetStatePropertyAll(
-        EdgeInsets.symmetric(horizontal: 8, vertical: 0)),
-    minimumSize: WidgetStatePropertyAll(Size(0, 44)),
-    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-    iconSize: WidgetStatePropertyAll(16),
-  );
+  static ButtonStyle _compact(ButtonStyle base) => base.copyWith(
+        padding: const WidgetStatePropertyAll(
+            EdgeInsets.symmetric(horizontal: 8, vertical: 0)),
+        minimumSize: const WidgetStatePropertyAll(Size(0, 44)),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        iconSize: const WidgetStatePropertyAll(16),
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -375,6 +375,13 @@ class _BottomBar extends StatelessWidget {
     final l10n = context.l10n;
     final isLandscape =
         MediaQuery.orientationOf(context) == Orientation.landscape;
+
+    Widget label(String text) => Text(
+          text,
+          maxLines: 1,
+          softWrap: false,
+          overflow: TextOverflow.ellipsis,
+        );
 
     return Container(
       decoration: BoxDecoration(
@@ -384,39 +391,36 @@ class _BottomBar extends StatelessWidget {
       child: SafeArea(
         top: false,
         child: Padding(
-          padding: EdgeInsets.fromLTRB(12, isLandscape ? 4 : 8, 12,
-              isLandscape ? 4 : 12),
+          padding: EdgeInsets.fromLTRB(
+              12, isLandscape ? 4 : 8, 12, isLandscape ? 4 : 12),
           child: Row(
             children: [
               Expanded(
                 child: ElevatedButton.icon(
-                  icon: const Icon(Icons.add),
-                  label: Text(l10n.addExtraDenomination,
-                      maxLines: 1, overflow: TextOverflow.ellipsis),
-                  style: ElevatedButton.styleFrom(
+                  icon: const Icon(Icons.add, size: 16),
+                  label: label(l10n.addExtraDenomination),
+                  style: _compact(ElevatedButton.styleFrom(
                     backgroundColor: cs.secondaryContainer,
                     foregroundColor: cs.onSecondaryContainer,
-                  ).merge(_btnStyle),
+                  )),
                   onPressed: onAdd,
                 ),
               ),
               const SizedBox(width: 6),
               Expanded(
                 child: OutlinedButton.icon(
-                  icon: const Icon(Icons.refresh),
-                  label: Text(l10n.reset,
-                      maxLines: 1, overflow: TextOverflow.ellipsis),
-                  style: OutlinedButton.styleFrom().merge(_btnStyle),
+                  icon: const Icon(Icons.refresh, size: 16),
+                  label: label(l10n.reset),
+                  style: _compact(OutlinedButton.styleFrom()),
                   onPressed: onReset,
                 ),
               ),
               const SizedBox(width: 6),
               Expanded(
                 child: FilledButton.icon(
-                  icon: const Icon(Icons.save),
-                  label: Text(l10n.save,
-                      maxLines: 1, overflow: TextOverflow.ellipsis),
-                  style: FilledButton.styleFrom().merge(_btnStyle),
+                  icon: const Icon(Icons.save, size: 16),
+                  label: label(l10n.save),
+                  style: _compact(FilledButton.styleFrom()),
                   onPressed: onSave,
                 ),
               ),
