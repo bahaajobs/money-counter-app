@@ -202,6 +202,28 @@ Column
 
 ---
 
+## المرحلة 11: دعم الـ Landscape + تصحيح اسم المطور ✅
+**التاريخ:** 2026-07-01
+
+### ما تم:
+
+#### 1. دعم الاتجاهين Portrait & Landscape
+- أُضيف `OrientationBuilder` في body الشاشة الرئيسية
+- **Portrait:** تخطيط Column الحالي بدون تغيير
+- **Landscape:** تخطيط `Row` بلوحتين:
+  - **اللوحة اليسرى** (عرض 180dp): `_TotalCard(compact: true)` + `_ProfileSelector(axis: Axis.vertical)`
+  - **اللوحة اليمنى** (Expanded): قائمة الفئات + `_BottomBar`
+- أُضيف `compact` parameter لـ `_TotalCard` (حشو وخط أصغر عند `compact: true`)
+- أُضيف `axis` parameter لـ `_ProfileSelector` (عمودي في Landscape، أفقي في Portrait)
+
+#### 2. تصحيح اسم المطور بالإنجليزية
+- `app_en.arb` → `"aboutCredit": "Concept & Design: BahaaEldin Ghazzaly"`
+
+- رقم الإصدار: `1.0.4+5`
+- tag: `v1.0.4`
+
+---
+
 ## مشكلات موثقة وحلولها
 
 | # | المشكلة | الحل |
@@ -221,3 +243,5 @@ Column
 | 13 | الأزرار السفلية (FAB) تتداخل مع محتوى القائمة — المحاولة الأولى | نقلها إلى `bottomNavigationBar` — لم تُحل على جميع الأجهزة بسبب z-ordering |
 | 14 | التداخل استمر مع `bottomNavigationBar` على بعض الأجهزة | نقل الأزرار داخل `Column` بعد `Expanded(ListView)` — حل هيكلي لا يعتمد على z-ordering |
 | 15 | build artifacts قديمة تمنع ظهور الإصلاح | `flutter clean` قبل إعادة البناء عند الاشتباه بمشكلة cache |
+| 16 | `_TotalCard` بدون `compact` يستهلك مساحة كبيرة في Landscape | إضافة `compact: true` تُقلِّص الحشو والخط تلقائياً |
+| 17 | `_ProfileSelector` أفقي لا يناسب اللوحة الجانبية الضيقة | إضافة `axis: Axis.vertical` لعرض Chips عمودياً في Landscape |

@@ -48,38 +48,88 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          _TotalCard(total: total, currency: profile.currency),
-          _ProfileSelector(
-            profiles: provider.profiles,
-            activeId: provider.activeProfileId,
-            onSelect: provider.selectProfile,
-          ),
-          Expanded(
-            child: ListView.separated(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-              itemCount: session.groups.length,
-              separatorBuilder: (_, __) => const Divider(height: 1),
-              itemBuilder: (ctx, gIdx) {
-                final group = session.groups[gIdx];
-                return _GroupSection(
-                  group: group,
-                  currency: profile.currency,
-                  groupIdx: gIdx,
-                  onCountChanged: (bIdx, val) => provider.updateCount(gIdx, bIdx, val),
-                  onAddBundle: () => provider.addBundle(gIdx),
-                  onDeleteBundle: (bIdx) => provider.removeBundle(gIdx, bIdx),
-                );
-              },
-            ),
-          ),
-          _BottomBar(
+      body: OrientationBuilder(
+        builder: (_, orientation) {
+          final isLandscape = orientation == Orientation.landscape;
+
+          final listView = ListView.separated(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+            itemCount: session.groups.length,
+            separatorBuilder: (_, __) => const Divider(height: 1),
+            itemBuilder: (ctx, gIdx) {
+              final group = session.groups[gIdx];
+              return _GroupSection(
+                group: group,
+                currency: profile.currency,
+                groupIdx: gIdx,
+                onCountChanged: (bIdx, val) =>
+                    provider.updateCount(gIdx, bIdx, val),
+                onAddBundle: () => provider.addBundle(gIdx),
+                onDeleteBundle: (bIdx) => provider.removeBundle(gIdx, bIdx),
+              );
+            },
+          );
+
+          final bottomBar = _BottomBar(
             onAdd:   () => _showAddDenominationDialog(context, provider),
             onReset: () => _confirmReset(context, provider),
             onSave:  () => _saveHistory(context, provider),
-          ),
-        ],
+          );
+
+          if (isLandscape) {
+            return Row(
+              children: [
+                // Left panel: compact total + profile chips
+                SizedBox(
+                  width: 180,
+                  child: Column(
+                    children: [
+                      _TotalCard(
+                          total: total,
+                          currency: profile.currency,
+                          compact: true),
+                      Expanded(
+                        child: _ProfileSelector(
+                          profiles: provider.profiles,
+                          activeId: provider.activeProfileId,
+                          onSelect: provider.selectProfile,
+                          axis: Axis.vertical,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                VerticalDivider(
+                    width: 1,
+                    thickness: 0.5,
+                    color: cs.outlineVariant),
+                // Right panel: denomination list + actions
+                Expanded(
+                  child: Column(
+                    children: [
+                      Expanded(child: listView),
+                      bottomBar,
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }
+
+          // Portrait
+          return Column(
+            children: [
+              _TotalCard(total: total, currency: profile.currency),
+              _ProfileSelector(
+                profiles: provider.profiles,
+                activeId: provider.activeProfileId,
+                onSelect: provider.selectProfile,
+              ),
+              Expanded(child: listView),
+              bottomBar,
+            ],
+          );
+        },
       ),
     );
   }
@@ -188,8 +238,10 @@ class _HomeScreenState extends State<HomeScreen> {
 class _TotalCard extends StatelessWidget {
   final double total;
   final String currency;
+  final bool compact;
 
-  const _TotalCard({required this.total, required this.currency});
+  const _TotalCard(
+      {required this.total, required this.currency, this.compact = false});
 
   @override
   Widget build(BuildContext context) {
@@ -198,33 +250,37 @@ class _TotalCard extends StatelessWidget {
     final bundleCount = (total / 100).floor();
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.all(12),
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 24),
+      margin: EdgeInsets.all(compact ? 8 : 12),
+      padding: EdgeInsets.symmetric(
+          vertical: compact ? 10 : 20, horizontal: compact ? 12 : 24),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [cs.primary, cs.primaryContainer],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(compact ? 14 : 20),
         boxShadow: [
           BoxShadow(
               color: cs.primary.withValues(alpha: 0.3),
-              blurRadius: 12,
+              blurRadius: compact ? 6 : 12,
               offset: const Offset(0, 4))
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(l10n.total,
-              style: TextStyle(color: cs.onPrimary.withValues(alpha: 0.8), fontSize: 14)),
-          const SizedBox(height: 4),
+              style: TextStyle(
+                  color: cs.onPrimary.withValues(alpha: 0.8),
+                  fontSize: compact ? 11 : 14)),
+          SizedBox(height: compact ? 2 : 4),
           FittedBox(
             child: Text(
               '${_fmt(total)} $currency',
               style: TextStyle(
                 color: cs.onPrimary,
-                fontSize: 36,
+                fontSize: compact ? 22 : 36,
                 fontWeight: FontWeight.bold,
                 letterSpacing: 1,
               ),
@@ -233,7 +289,9 @@ class _TotalCard extends StatelessWidget {
           if (total > 0)
             Text(
               l10n.fullBundles(bundleCount),
-              style: TextStyle(color: cs.onPrimary.withValues(alpha: 0.7), fontSize: 12),
+              style: TextStyle(
+                  color: cs.onPrimary.withValues(alpha: 0.7),
+                  fontSize: compact ? 10 : 12),
             ),
         ],
       ),
@@ -252,13 +310,44 @@ class _ProfileSelector extends StatelessWidget {
   final List<Profile> profiles;
   final String activeId;
   final ValueChanged<String> onSelect;
+  final Axis axis;
 
   const _ProfileSelector(
-      {required this.profiles, required this.activeId, required this.onSelect});
+      {required this.profiles,
+      required this.activeId,
+      required this.onSelect,
+      this.axis = Axis.horizontal});
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+
+    Widget chip(Profile p) {
+      final isActive = p.id == activeId;
+      return ChoiceChip(
+        label: Text(p.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            softWrap: false),
+        selected: isActive,
+        onSelected: (_) => onSelect(p.id),
+        selectedColor: cs.primaryContainer,
+        labelStyle: TextStyle(
+          color: isActive ? cs.onPrimaryContainer : null,
+          fontWeight: isActive ? FontWeight.bold : null,
+        ),
+      );
+    }
+
+    if (axis == Axis.vertical) {
+      return ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        itemCount: profiles.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 6),
+        itemBuilder: (_, i) => chip(profiles[i]),
+      );
+    }
+
     return SizedBox(
       height: 42,
       child: ListView.separated(
@@ -266,20 +355,7 @@ class _ProfileSelector extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12),
         itemCount: profiles.length,
         separatorBuilder: (_, __) => const SizedBox(width: 8),
-        itemBuilder: (ctx, i) {
-          final p = profiles[i];
-          final isActive = p.id == activeId;
-          return ChoiceChip(
-            label: Text(p.name),
-            selected: isActive,
-            onSelected: (_) => onSelect(p.id),
-            selectedColor: cs.primaryContainer,
-            labelStyle: TextStyle(
-              color: isActive ? cs.onPrimaryContainer : null,
-              fontWeight: isActive ? FontWeight.bold : null,
-            ),
-          );
-        },
+        itemBuilder: (_, i) => chip(profiles[i]),
       ),
     );
   }

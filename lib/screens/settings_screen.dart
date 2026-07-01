@@ -48,7 +48,7 @@ class SettingsScreen extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.info_outline),
                   title: Text(l10n.version),
-                  trailing: const Text('1.0.3',
+                  trailing: const Text('1.0.4',
                       style: TextStyle(color: Colors.grey)),
                 ),
                 const Divider(height: 1, indent: 56),
